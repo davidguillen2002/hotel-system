@@ -41,22 +41,24 @@ hotel-system/
 │   ├── Dockerfile
 │   ├── server.js
 │   ├── package.json
-│   ├── swagger.yaml
 ├── inventory-service/
 │   ├── Dockerfile
 │   ├── server.js
 │   ├── package.json
-│   ├── swagger.yaml
 ├── soap-service/
 │   ├── Dockerfile
 │   ├── index.js
 │   ├── package.json
-│   ├── wsdl.xml
 ├── docker-compose.yml
 ├── sql-scripts/
 │   ├── inventory_service.sql
 │   ├── rest_api_service.sql
 │   ├── soap_service.sql
+├── Arquitectura.png
+├── Clases.png
+├── Despliegue.png
+├── Flujo.png
+├── Secuencia.png
 └── README.md
 
 ---
@@ -68,7 +70,7 @@ hotel-system/
 1. **Clona este repositorio:**
 
    ```bash
-   git clone <URL del repositorio>
+   git clone https://github.com/davidguillen2002/hotel-system.git
    cd hotel-system
    ```
 
@@ -128,17 +130,11 @@ hotel-system/
      npm start
      ```
 
-4. **Verifica que los servicios estén funcionando:**
-
-   - **Inventario:** [http://localhost:5000/api-docs](http://localhost:5000/api-docs)  
-   - **Reservas:** [http://localhost:4000/api-docs](http://localhost:4000/api-docs)  
-   - **Servicio SOAP:** [http://localhost:3000/api-docs](http://localhost:3000/api-docs)  
+4. **Verifica que los servicios estén funcionando:**  
 
 ---
 
 ## Inicialización de la Base de Datos
-
-Los scripts SQL para inicializar las bases de datos están en el directorio `sql-scripts`.
 
 ### **1. Esquema del Inventario**
 
@@ -176,10 +172,6 @@ CREATE TABLE reservations (
     status VARCHAR(20) NOT NULL DEFAULT 'active',
     FOREIGN KEY (room_id) REFERENCES rooms(room_id)
 );
-
-INSERT INTO reservations (room_id, customer_name, start_date, end_date) VALUES
-(1, 'John Doe', '2024-12-20', '2024-12-25'),
-(2, 'Jane Smith', '2024-12-22', '2024-12-24');
 ```
 
 ### **3. Esquema de Disponibilidad (SOAP)**
@@ -196,11 +188,33 @@ CREATE TABLE availability (
     status VARCHAR(20) NOT NULL DEFAULT 'available',
     FOREIGN KEY (room_id) REFERENCES rooms(room_id)
 );
-
-INSERT INTO availability (room_id, available_date, status) VALUES
-(1, '2024-12-20', 'available'),
-(2, '2024-12-22', 'available');
 ```
+
+---
+
+## Diagramas
+
+### Arquitectura del Sistema
+![Arquitectura](https://github.com/davidguillen2002/hotel-system/blob/main/Arquitectura.png)
+
+### Diagrama de Clases
+![Clases](https://github.com/davidguillen2002/hotel-system/blob/main/Clases.png)
+
+### Diagrama de Despliegue
+![Despliegue](https://github.com/davidguillen2002/hotel-system/blob/main/Despliegue.png)
+
+### Flujo de Actividades
+![Flujo](https://github.com/davidguillen2002/hotel-system/blob/main/Flujo.png)
+
+### Diagrama de Secuencia
+![Secuencia](https://github.com/davidguillen2002/hotel-system/blob/main/Secuencia.png)
+
+---
+
+## Video Demostrativo
+
+**Puedes ver la demostración completa del sistema en el siguiente enlace:**  
+[https://youtu.be/l_kqqEeWAI0](https://youtu.be/l_kqqEeWAI0)
 
 ---
 
@@ -214,18 +228,6 @@ INSERT INTO availability (room_id, available_date, status) VALUES
 
 - **Microservicio SOAP:**  
   [http://localhost:3000/api-docs](http://localhost:3000/api-docs)  
-
----
-
-## Documentación Swagger
-
-Cada servicio incluye una documentación interactiva accesible en sus respectivas URLs principales. Esta documentación te permite probar cada endpoint de manera sencilla.
-
----
-
-## Notas Finales
-
-Este sistema fue diseñado con una arquitectura de microservicios para garantizar escalabilidad y flexibilidad. Si tienes dudas, comentarios o sugerencias, ¡no dudes en contactarme! 😊
 
 ---
 
