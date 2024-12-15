@@ -1,0 +1,63 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:14
+    container_name: hotel-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Monono123
+    ports:
+      - "5434:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - hotel-network
+
+  soap-service:
+    build: ./soap-service
+    container_name: soap-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - hotel-network
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:Monono123@db:5432/soap_service
+
+  api-rest-reservations:
+    build: ./api-rest-reservations
+    container_name: api-rest-reservations
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+      - soap-service
+    networks:
+      - hotel-network
+    environment:
+      - PORT=4000
+      - DATABASE_URL=postgresql://postgres:Monono123@db:5432/rest_api_service
+      - SOAP_URL=http://soap-service:3000/soap
+
+
+  inventory-service:
+    build: ./inventory-service
+    container_name: inventory-service
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - hotel-network
+    environment:
+      - PORT=5000
+      - DATABASE_URL=postgresql://postgres:Monono123@db:5432/inventory_service
+
+networks:
+  hotel-network:
+    driver: bridge
+
+volumes:
+  db_data:
